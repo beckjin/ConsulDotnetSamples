@@ -1,17 +1,16 @@
 ﻿using Consul;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace ServiceB.Consul
 {
     public static class ConsulBuilderExtensions
     {
-        public static IApplicationBuilder RegisterConsul(this IApplicationBuilder app, IApplicationLifetime lifetime, ConsulOption consulOption)
+        public static IApplicationBuilder RegisterConsul(this IApplicationBuilder app, IHostApplicationLifetime lifetime, ConsulOption consulOption)
         {
             var consulClient = new ConsulClient(x =>
             {
-                // consul 服务地址
                 x.Address = new Uri(consulOption.Address);
             });
 

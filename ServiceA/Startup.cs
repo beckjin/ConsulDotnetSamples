@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
+using Microsoft.Extensions.Hosting;
 using ServiceA.Consul;
+using System;
 
 namespace ServiceA
 {
@@ -20,28 +20,27 @@ namespace ServiceA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton(Configuration.GetSection("Consul").Get<ConsulOption>());
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime, ConsulOption consulOption)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
-
-            var consulOption = new ConsulOption
-            {
-                ServiceName = Configuration["ServiceName"],
-                ServiceIP = Configuration["ServiceIP"],
-                ServicePort = Convert.ToInt32(Configuration["ServicePort"]),
-                ServiceHealthCheck = Configuration["ServiceHealthCheck"],
-                Address = Configuration["ConsulAddress"]
-            };
+            // 注册
             app.RegisterConsul(lifetime, consulOption);
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
