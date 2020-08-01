@@ -16,9 +16,10 @@ namespace Gateway
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*:9600");
                     webBuilder.ConfigureAppConfiguration(c =>
                     {
-                        c.AddJsonFile("ocelot.json");
+                        c.AddJsonFile("configuration.json");
                     });
                 });
     }
