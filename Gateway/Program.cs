@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace ServiceA
+namespace Gateway
 {
     public class Program
     {
@@ -15,7 +16,10 @@ namespace ServiceA
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls($"http://*:{(args.Length > 0 ? args[0] : "8000")}");
+                    webBuilder.ConfigureAppConfiguration(c =>
+                    {
+                        c.AddJsonFile("ocelot.json");
+                    });
                 });
     }
 }

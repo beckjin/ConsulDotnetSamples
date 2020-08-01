@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace ServiceA.Controllers
 {
@@ -18,6 +19,12 @@ namespace ServiceA.Controllers
         public string Get()
         {
             return $"service-a {_configuration["Id"]}";
+        }
+
+        public async Task<string> LongTime()
+        {
+            await Task.Delay(5000);
+            return "Finished";
         }
     }
 }

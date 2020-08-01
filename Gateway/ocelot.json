@@ -1,0 +1,48 @@
+{
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Scheme": "http",
+      "Host": "192.168.124.9",
+      "Port": 8500,
+      "Type": "Consul"
+    }
+  },
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "ServiceName": "service-a",
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "192.168.124.11",
+      //    "Port": 8000
+      //  },
+      //  {
+      //    "Host": "192.168.124.11",
+      //    "Port": 8001
+      //  }
+      //],
+      "UpstreamPathTemplate": "/servicea/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+      //"RateLimitOptions": {
+      //  "ClientWhitelist": [], // 白名单，不受限流控制
+      //  "EnableRateLimiting": true, // 开启限流
+      //  "Period": "5s", // 指定时间段内（s,m,h,d）
+      //  "PeriodTimespan": 3, // 超过限制次数后需等待的时间（秒）
+      //  "Limit": 300 // 在 Period 时间段内最大允许访问数
+      //},
+      //"QoSOptions": { // Install-Package Ocelot.Provider.Polly
+      //  "ExceptionsAllowedBeforeBreaking": 3, // 连续异常次数
+      //  "DurationOfBreak": 5000, // 熔断时间
+      //  "TimeoutValue": 5000 // 超时时间
+      //},
+      //"FileCacheOptions": { // Install-Package Ocelot.Cache.CacheManager
+      //  "TtlSeconds": 15,
+      //  "Region": "servicea"
+      //}
+    }
+  ]
+}
